@@ -1,4 +1,4 @@
-require_relative '../lib/conversion/base_conversion.rb'
+require_relative '../lib/conversion/conversion_base.rb'
 require_relative '../lib/conversion/conversion_length.rb'
 require_relative '../lib/conversion/conversion_weight.rb'
 

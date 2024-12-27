@@ -1,4 +1,4 @@
-require_relative './base_conversion.rb'
+require_relative './conversion_base.rb'
 
 class ConversionLength
 
