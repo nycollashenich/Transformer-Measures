@@ -1,5 +1,6 @@
 module Conversion
   
+  # fatores de comprimento
   FACTORS_LENGTH = {
     # Imperial
     "inch" => 0.0254,         
@@ -13,6 +14,7 @@ module Conversion
     "kilometer" => 1000
   }
 
+  # fatores de peso
   FACTORS_WEIGHT = {
     # Peso (base em gramas)
     "gram" => 1,              
