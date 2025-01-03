@@ -14,4 +14,3 @@ module AreaConversion
   end
 end
 
-p AreaConversion.convert(10, 'square_meter', 'acre')

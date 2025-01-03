@@ -1,72 +1,58 @@
-# require_relative '../lib/conversion/conversion_base.rb'
-# require_relative '../lib/conversion/conversion_length.rb'
-# require_relative '../lib/conversion/conversion_weight.rb'
+require './conversion/conversion_area.rb'
+require './conversion/conversion_weight.rb'
+require './conversion/conversion_length.rb'
 
-# class Main
-#   attr_reader :value, :origin_unit, :destination_unit
+class UniversalConversion
 
-#   SYSTEMS = {
-#     length: %w[inch mile millimeter meter], # %w = cria arrays
-#   }
-  
-#   def initialize(value=nil, origin_unit=nil, destination_unit=nil)
-#     @value = value
-#     @origin_unit = origin_unit
-#     @destination_unit = destination_unit
-#   end
+  CONVERTERS = {
+    'length' => LengthConversion,
+    'weight' => WeightConversion,
+  }
 
-#   def welcome
-#     p 'Bem vindo ao Convertedor de medidas!'
+  def initialize(value=nil, origin_unit=nil, destination_unit=nil)
+    @value = value
+    @origin_unit = origin_unit
+    @destination_unit = destination_unit
+  end 
+
+  def welcome # dados capitados / tratados
+    p "Welcome!"
     
-#     puts 'Digite o valor para ser convertido: '
-#     value = gets.chomp.to_f
+    p 'informe o seu valor inicial: '
+    @value = gets.chomp.to_f
 
-#     puts 'Digite a unidade de origem: '
-#     origin_unit = gets.chomp.downcase 
+    p 'Informe a categoria (length, weight)'
+    category = gets.chomp.to_s
 
-#     puts 'Digite a unidade de destino: '
-#     destination_unit = gets.chomp.downcase
+    p 'Informe a medida de origem: '
+    @origin_unit = gets.chomp.to_s.downcase
 
-#     system_meansure
+    p 'Informe a medida de destino: '
+    @destination_unit = gets.chomp.downcase
+  
+    # verification
 
-#   end
+    if CONVERTERS.key?(category)
+      process_conversion(category)
+    else
+      p 'Category invalid.'
+    end
+  end
 
-#   def system_meansure
-#     system = determination_system(origin_unit)
+  def process_conversion(category)
+    convert = CONVERTERS[category]
 
-#     if system.nil?
-#       puts "Erro: Unidade de origem não reconhecida: #{origin_unit}"
-#       return 
-#     end
+    if convert && convert.valid_units.include?(@origin_unit) && convert.valid_units.include?(@destination_unit)
+      result = convert.convert(@value, @origin_unit, @destination_unit)
+      p "Result: #{@value} #{@origin_unit} #{@destination_unit}  /  #{result}"
+    else
+      p 'unidades inválidas.' 
+    end
+  end
 
-#     unless SYSTEMS[system].include?(destination_unit)
-#       p "Erro: Unidade de destino não pertence ao mesmo sistema de origem."
-#       return
-#     end
+end
 
-#     result = case system
-#               when :weight
-#                 WeightConversion.convert(value, origin_unit, destination_unit)
-#               when :length
-#                 LengthConversion.convert(value, origin_unit, destination_unit)
-#               when :area
-#                 AreaConversion.convert(value, origin_unit, destination_unit)
-#               else
-#                 "Erro: Sistema não suportado."
-#               end
 
-#     p "Resultado: #{result} #{destination_unit}"
-#   end
 
-#   private
-
-#   def determination_system(unit)
-#     SYSTEMS.each do |system, units|
-#       return system if units.include?(unit)
-#     end
-#     nil
-#   end
-# end
-
-# teste = Main.new
-# teste.welcome
+teste = UniversalConversion.new(10)
+teste.welcome
