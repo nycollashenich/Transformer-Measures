@@ -1,5 +1,12 @@
 module LengthConversion
-    FACTORS = {
+  
+  VALID_UNITS = %w[mm cm m km inch ft yard mile]
+
+  def self.valid_units
+    VALID_UNITS
+  end
+  
+  FACTORS = {
     "millimeter" => 0.001,
     "centimeter" => 0.01,
     "meter" => 1,

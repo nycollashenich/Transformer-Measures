@@ -1,4 +1,7 @@
 module WeightConversion
+  
+  VALID_UNITS = %w[gr kg ton pound ounce]
+  
   FACTORS = {
     "gram" => 1,              
     "kilogram" => 1000,
