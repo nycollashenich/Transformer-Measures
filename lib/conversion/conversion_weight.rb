@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module WeightConversion
-  VALID_UNITS = %w[gr kg ton pound ounce]
+  VALID_UNITS = %w[gr kg ton pound ounce].freeze
 
   def self.valid_units
     VALID_UNITS
   end
 
   FACTORS = {
-    'gram' => 1,
-    'kilogram' => 1000,
+    'gr' => 1,
+    'kg' => 1000,
     'ton' => 1_000_000,
     'pound' => 453.59237,
     'ounce' => 28.3495
-  }
+  }.freeze
 
 
 
