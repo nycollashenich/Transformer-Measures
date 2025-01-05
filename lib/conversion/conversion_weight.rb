@@ -2,6 +2,10 @@ module WeightConversion
   
   VALID_UNITS = %w[gr kg ton pound ounce]
   
+  def self.valid_units
+  VALID_UNITS
+  end
+  
   FACTORS = {
     "gram" => 1,              
     "kilogram" => 1000,
@@ -10,9 +14,7 @@ module WeightConversion
     "ounce" => 28.3495
   }
 
-  def self.valid_units
-    ["gram", "kilogram", "ton", "pound", "ounce"]
-  end
+  
   
   def self.convert(value, origin_unit, destination_unit)
     value_in_meters = value * FACTORS[origin_unit]

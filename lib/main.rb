@@ -27,7 +27,7 @@ class UniversalConversion
     if CONVERTERS.key?(@category)
       available_units = CONVERTERS[@category].valid_units
       puts "Medidas disponíveis para #{@category}: #{available_units.join(', ')}"
-    else
+    else  
       puts "Categoria inválida! As opções disponíveis são: #{CONVERTERS.keys.join(', ')}"
     end
   end
@@ -35,6 +35,9 @@ class UniversalConversion
   def welcome # dados capitados / tratados
     
     puts "Welcome!"
+
+    max_attempts = 3
+    attempts = 0
     
     begin  
       
@@ -72,12 +75,17 @@ class UniversalConversion
   def process_conversion(category)
     convert = CONVERTERS[category]
 
-    if convert && convert.valid_units.include?(@origin_unit) && convert.valid_units.include?(@destination_unit)
+    if valid_conversion?
       result = convert.convert(@value, @origin_unit, @destination_unit)
       p "Resultado: #{@value} #{@origin_unit} é igual a #{result} #{@destination_unit}"
     else
-      p 'Unidade inválida! Escolha entre: #{convert.valid_units.join(', ')}.' 
+      p "Unidade inválida! Escolha entre: #{convert.valid_units.join(', ')}."
     end
+  end
+
+  def valid_conversion?
+    convert = CONVERTERS[@category]
+    convert.valid_units.include?(@origin_unit) && convert.valid_units.include?(@destination_unit) 
   end
 
 end

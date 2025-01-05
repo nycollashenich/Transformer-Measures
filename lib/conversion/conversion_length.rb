@@ -16,10 +16,6 @@ module LengthConversion
     "yard" => 0.9144,
     "mile" => 1609.34
   }
-
-  def self.valid_units
-    ["meter", "kilometer", "centimeter", "millimeter", "inch", "foot", "yard", "mile"]
-  end
   
 
   def self.convert(value, origin_unit, destination_unit)
