@@ -1,22 +1,23 @@
-require './conversion/conversion_area.rb'
-require './conversion/conversion_weight.rb'
-require './conversion/conversion_length.rb'
+require './conversion/conversion_area'
+require './conversion/conversion_weight'
+require './conversion/conversion_length'
 
 class UniversalConversion
-
   CONVERTERS = {
     'length' => LengthConversion,
-    'weight' => WeightConversion,
+    'weight' => WeightConversion
   }
 
-  def initialize(value=nil, origin_unit=nil, destination_unit=nil)
+  def initialize(value = nil, origin_unit = nil, destination_unit = nil)
     @value = value
     @origin_unit = origin_unit
     @destination_unit = destination_unit
-  end 
+  end
 
   def valid_number(value)
-    Float(value) rescue false
+    Float(value)
+  rescue StandardError
+    false
   end
 
   def valid_category(category)
@@ -27,25 +28,21 @@ class UniversalConversion
     if CONVERTERS.key?(@category)
       available_units = CONVERTERS[@category].valid_units
       puts "Medidas disponíveis para #{@category}: #{available_units.join(', ')}"
-    else  
+    else
       puts "Categoria inválida! As opções disponíveis são: #{CONVERTERS.keys.join(', ')}"
     end
   end
 
   def welcome # dados capitados / tratados
-    
-    puts "Welcome!"
+    puts 'Welcome!'
 
-    max_attempts = 3
-    attempts = 0
-    
-    begin  
-      
+    begin
       puts 'Informe um valor inicial: '
       @value = gets.chomp
       unless valid_number(@value) # unless =  se a condição for falsa
         raise 'Valor inválido, tente novamente'
       end
+
       @value = @value.to_f
 
       puts "Agora, informe a categoria #{CONVERTERS.keys.join(', ')}: "
@@ -61,14 +58,13 @@ class UniversalConversion
 
       puts 'Informe a medida de destino: '
       @destination_unit = gets.chomp.downcase
-    
-      process_conversion(@category)  
 
-    rescue => e 
+      process_conversion(@category)
+    rescue StandardError => e
       puts "Erro: #{e.message}"
       attemps += 1
       retry if attemps < max_attemps
-      puts "Número máximo de tentativas alcançado. Encerrando..."
+      puts 'Número máximo de tentativas alcançado. Encerrando...'
     end
   end
 
@@ -85,9 +81,8 @@ class UniversalConversion
 
   def valid_conversion?
     convert = CONVERTERS[@category]
-    convert.valid_units.include?(@origin_unit) && convert.valid_units.include?(@destination_unit) 
+    convert.valid_units.include?(@origin_unit) && convert.valid_units.include?(@destination_unit)
   end
-
 end
 
 

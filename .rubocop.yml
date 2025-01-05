@@ -1,0 +1,9 @@
+# .rubocop.yml
+AllCops:
+  TargetRubyVersion: 2.7
+
+Layout/LineLength:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 10
