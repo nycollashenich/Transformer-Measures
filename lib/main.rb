@@ -2,6 +2,8 @@ require './conversion/conversion_area'
 require './conversion/conversion_weight'
 require './conversion/conversion_length'
 
+require 'colorize'
+
 class UniversalConversion
   CONVERTERS = {
     'length' => LengthConversion,
@@ -27,44 +29,47 @@ class UniversalConversion
   def units_available
     if CONVERTERS.key?(@category)
       available_units = CONVERTERS[@category].valid_units
-      puts "Medidas disponíveis para #{@category}: #{available_units.join(', ')}"
+      puts "Medidas disponíveis para #{@category}: #{available_units.join(', ')}".colorize(:green)
     else
       puts "Categoria inválida! As opções disponíveis são: #{CONVERTERS.keys.join(', ')}"
     end
   end
 
   def welcome # dados capitados / tratados
-    puts 'Welcome!'
+    attempts = 0
+    max_attempts = 3
+
+    puts 'Welcome!'.colorize(:yellow)
 
     begin
-      puts 'Informe um valor inicial: '
+      puts 'Informe um valor inicial: '.colorize(:blue)
       @value = gets.chomp
       unless valid_number(@value) # unless =  se a condição for falsa
-        raise 'Valor inválido, tente novamente'
+        raise 'Valor inválido, tente novamente'.colorize(:red)
       end
 
       @value = @value.to_f
 
-      puts "Agora, informe a categoria #{CONVERTERS.keys.join(', ')}: "
+      puts "Agora, informe a categoria #{CONVERTERS.keys.join(', ')}: ".colorize(:blue)
       @category = gets.chomp.downcase
       unless valid_category(@category)
-        raise "Categoria inválida, tente alguma dessas => #{CONVERTERS.keys.join(', ')}."
+        raise "Categoria inválida, tente alguma dessas => #{CONVERTERS.keys.join(', ')}.".colorize(:red)
       end
 
       units_available
 
-      puts 'Informe a medida de origem: '
+      puts 'Informe a medida de origem: '.colorize(:green)
       @origin_unit = gets.chomp.downcase
 
-      puts 'Informe a medida de destino: '
+      puts 'Informe a medida de destino: '.colorize(:green)
       @destination_unit = gets.chomp.downcase
 
       process_conversion(@category)
     rescue StandardError => e
       puts "Erro: #{e.message}"
-      attemps += 1
-      retry if attemps < max_attemps
-      puts 'Número máximo de tentativas alcançado. Encerrando...'
+      attempts += 1
+      retry if attempts < max_attempts
+      puts 'Número máximo de tentativas alcançado. Encerrando...'.colorize(:red)
     end
   end
 
@@ -73,9 +78,9 @@ class UniversalConversion
 
     if valid_conversion?
       result = convert.convert(@value, @origin_unit, @destination_unit)
-      p "Resultado: #{@value} #{@origin_unit} é igual a #{result} #{@destination_unit}"
+      p "Resultado: #{@value} #{@origin_unit} é igual a #{result} #{@destination_unit}".colorize(:purple)
     else
-      p "Unidade inválida! Escolha entre: #{convert.valid_units.join(', ')}."
+      p "Unidade inválida! Escolha entre: #{convert.valid_units.join(', ')}.".colorize(:red)
     end
   end
 
